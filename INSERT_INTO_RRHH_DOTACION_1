@@ -1,0 +1,7 @@
+#INSERT INTO RRHH_Dotacion
+SELECT rut, Tipo_Contrato as item, 'Dotación' as grupo, count(Tipo_Contrato) as cantidad, 
+date_format(CONCAT(año,"-",'07',"-",'01'),"%Y-%m-%d")as fecha 
+FROM RRHH_Remuneracion
+WHERE item = 'SUELDO BASE' and año = 2023 and mes = 'Julio'
+GROUP BY rut
+ORDER BY rut ASC

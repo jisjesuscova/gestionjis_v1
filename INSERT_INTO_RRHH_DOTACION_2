@@ -1,0 +1,4 @@
+#INSERT INTO RRHH_Dotacion
+select rut, item, 'Rotacion' as grupo, cantidad, fecha
+from RRHH_Rotacion
+WHERE fecha >= '2023-01-01'

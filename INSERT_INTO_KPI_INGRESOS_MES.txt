@@ -1,0 +1,13 @@
+INSERT INTO KPI_INGRESOS_MES (periodo, period, trimestre, año, branch_office, supervisor, ticket_number, venta_SSS, ingresos_SSS)
+SELECT
+	  KPI_INGRESOS_ANTERIOR_MES.Periodo as periodo, 
+	  KPI_INGRESOS_ANTERIOR_MES.period, 
+	  KPI_INGRESOS_ANTERIOR_MES.Trimestre as trimestre, 
+	  KPI_INGRESOS_ANTERIOR_MES.`Año` as año, 
+	  KPI_INGRESOS_ANTERIOR_MES.branch_office, 
+	  KPI_INGRESOS_ANTERIOR_MES.supervisor, 
+	  KPI_INGRESOS_ANTERIOR_MES.ticket_number, 
+	  KPI_INGRESOS_ANTERIOR_MES.Venta_SSS as venta_SSS, 
+	  KPI_INGRESOS_ANTERIOR_MES.Ingresos_SSS as ingresos
+    FROM 	KPI_INGRESOS_ANTERIOR_MES
+ WHERE KPI_INGRESOS_ANTERIOR_MES.period < '2023-01'

@@ -1,0 +1,25 @@
+#INSERT INTO KPI_DTES_MES(dte_id, rut, cliente, folio, branch_office_id, dte_type_id, status_id, amount, period,`comment`, `status`, chip_id)
+SELECT
+	dtes.dte_id AS dte_id, 
+	dtes.rut AS rut, 
+	users.`names` AS cliente, 
+	dtes.folio AS folio, 
+	dtes.branch_office_id AS branch_office_id, 
+	dtes.dte_type_id AS dte_type_id, 
+	dtes.status_id AS status_id, 
+	dtes.amount AS amount, 
+	dtes.period AS period, 
+	dtes.`comment` AS `comment`,
+	statuses.`status` AS `status`, 
+	dtes.chip_id AS chip_id
+FROM dtes
+LEFT JOIN customers ON dtes.rut = customers.rut
+LEFT JOIN users ON customers.rut = users.rut
+LEFT JOIN statuses ON dtes.status_id = statuses.status_id
+WHERE
+	dtes.rut <> '66666666-6' AND
+	dtes.created_at > '2022-12-31 00:00:00' AND
+	dtes.dte_version_id = 1 AND
+	dtes.status_id > 17 AND
+	dtes.status_id < 24 AND
+	users.rol_id = 14

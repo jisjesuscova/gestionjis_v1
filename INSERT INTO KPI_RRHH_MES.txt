@@ -1,0 +1,14 @@
+INSERT INTO KPI_RRHH_MES (Sucursal, Mes, Año, Item, Monto, Clasificación, EERR, Tipo_Contrato, Fecha)
+SELECT
+	RRHH_Remuneracion.Sucursal, 
+	RRHH_Remuneracion.Mes, 
+	RRHH_Remuneracion.`Año`, 
+	RRHH_Remuneracion.Item, 
+	RRHH_Remuneracion.Monto, 
+	RRHH_Remuneracion.`Clasificación`, 
+	RRHH_Remuneracion.EERR, 
+	RRHH_Remuneracion.Tipo_Contrato, 
+	RRHH_Remuneracion.Fecha
+FROM
+	RRHH_Remuneracion
+	WHERE Año = 2023

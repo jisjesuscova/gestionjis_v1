@@ -1,0 +1,34 @@
+INSERT INTO KPI_INGRESOS_IMG_ACUM (fecha, periodo, period, año, branch_office, `value`, ticket_number, abonados, net_amount , transbank, Venta_Neta , Ingresos, Venta_SSS, Ingresos_SSS)
+SELECT
+	DATE_FORMAT(`QRY_INGRESOS_TOTALES_PBI`.`date`, '%Y-%m-%d') as fecha,
+	DM_PERIODO.Periodo,
+	DM_PERIODO.period,
+	DM_PERIODO.`Año`,
+	QRY_BRANCH_OFFICES.branch_office, 
+	QRY_IND_SSS.`value`, 
+	SUM(QRY_INGRESOS_TOTALES_PBI.ticket_number)AS ticket_number, 
+	SUM(QRY_INGRESOS_TOTALES_PBI.abonados) AS abonados, 
+	SUM(QRY_INGRESOS_TOTALES_PBI.net_amount) AS net_amount, 
+	SUM(QRY_INGRESOS_TOTALES_PBI.transbank) AS transbank,	
+	SUM((QRY_INGRESOS_TOTALES_PBI.net_amount + QRY_INGRESOS_TOTALES_PBI.transbank)) AS Venta_Neta, 
+	SUM((QRY_INGRESOS_TOTALES_PBI.net_amount + QRY_INGRESOS_TOTALES_PBI.transbank + QRY_INGRESOS_TOTALES_PBI.abonados)) AS Ingresos, 
+	SUM(((QRY_INGRESOS_TOTALES_PBI.net_amount + QRY_INGRESOS_TOTALES_PBI.transbank) * (QRY_IND_SSS.`value`))) AS Venta_SSS, 
+	SUM(((QRY_INGRESOS_TOTALES_PBI.net_amount + QRY_INGRESOS_TOTALES_PBI.transbank + QRY_INGRESOS_TOTALES_PBI.abonados) * (QRY_IND_SSS.`value`))) AS Ingresos_SSS
+	
+  FROM QRY_INGRESOS_TOTALES_PBI
+	LEFT JOIN QRY_BRANCH_OFFICES
+	ON QRY_INGRESOS_TOTALES_PBI.branch_office_id = QRY_BRANCH_OFFICES.branch_office_id
+	LEFT JOIN QRY_IND_SSS
+	ON QRY_INGRESOS_TOTALES_PBI.clave = QRY_IND_SSS.clave
+	LEFT JOIN DM_PERIODO
+	ON QRY_INGRESOS_TOTALES_PBI.date = DM_PERIODO.Fecha
+  WHERE	QRY_BRANCH_OFFICES.status_id = 15 AND
+	MONTH(`QRY_INGRESOS_TOTALES_PBI`.`date`) = ((MONTH(curdate()))) AND
+	YEAR(`QRY_INGRESOS_TOTALES_PBI`.`date`) = YEAR(curdate()) AND
+	DAY(`QRY_INGRESOS_TOTALES_PBI`.`date`)<= DAY(curdate()-1)
+  GROUP BY DM_PERIODO.Periodo,
+	DM_PERIODO.period,
+	DM_PERIODO.`Año`,
+	QRY_BRANCH_OFFICES.branch_office
+  ORDER BY
+	QRY_INGRESOS_TOTALES_PBI.date ASC
